@@ -1,2 +1,232 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+from tkinter import *
+from tkinter.ttk import Combobox
+from tkinter import messagebox
+import time
+import sqlite3
+
+try:
+    conobj=sqlite3.connect(database="bank.sqlite")
+    curobj=conobj.cursor()
+    curobj.execute("create table acn(acn_no integer primary key autoincrement,acn_name text,acn_pass text,acn_email text,acn_mob text,acn_bal float,acn_opendate text,acn_gender text)")
+    conobj.close()
+    print("table created")
+except:
+    print("something went wrong,might be table already exists")
+    
+win=Tk()
+win.state('zoomed')
+win.configure(bg='green')
+win.resizable(width=False,height=False)
+
+title.pack()
+dt=time.strftime("%d %B %Y,%A")
+date=Label(win,text=f"{dt}",font=('arial',17,'bold'),bg='pink',fg='blue')
+date.place(relx=.81,rely=.11)
+
+def main_screen():
+    frm=Frame(win)
+    frm.configure(bg='powder blue')
+    frm.place(relx=0,rely=.15,relwidth=1,relheight=.85)
+
+    def forgotpass():
+        frm.destroy()
+        forgotpass_screen()
+
+    def newuser():
+        frm.destroy()
+        newuser_screen()
+
+    def login():
+        acn=e_acn.get()
+        pwd=e_pass.get()
+        if len(acn)==0 or len(pwd)==0:
+            messagebox.showwarning("Validation","Empty fields are not allowed")
+            return
+        frm.destroy()
+        welcome_screen()
+
+    def clear():
+        e_acn.delete(0,"end")
+        e_pass.delete(0,"end")
+        e_acn.focus()
+        
+    lbl_acn=Label(frm,text="ACN",font=('arial',20,'bold'),bg='powder blue')
+    lbl_acn.place(relx=.3,rely=.1)
+
+    e_acn=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_acn.place(relx=.4,rely=.1)
+    e_acn.focus()
+
+    lbl_pass=Label(frm,text="Pass",font=('arial',20,'bold'),bg='powder blue')
+    lbl_pass.place(relx=.3,rely=.2)
+
+    e_pass=Entry(frm,font=('arial',20,'bold'),bd=5,show='*')
+    e_pass.place(relx=.4,rely=.2)
+
+    btn_login=Button(frm,text="login",font=('arial',20,'bold'),bd=5,command=login)
+    btn_login.place(relx=.42,rely=.3)
+
+    btn_clear=Button(frm,text="clear",font=('arial',20,'bold'),bd=5,command=clear)
+    btn_clear.place(relx=.52,rely=.3)
+
+    btn_fp=Button(frm,command=forgotpass,width=16,text="forgot password",font=('arial',20,'bold'),bd=5)
+    btn_fp.place(relx=.4,rely=.4)
+
+    btn_new=Button(frm,command=newuser,width=18,text="open new account",font=('arial',20,'bold'),bd=5)
+    btn_new.place(relx=.39,rely=.5)
+
+
+def forgotpass_screen():
+    frm=Frame(win)
+    frm.configure(bg='powder blue')
+    frm.place(relx=0,rely=.15,relwidth=1,relheight=.85)
+
+    def back():
+        frm.destroy()
+        main_screen()
+        
+    btn_new=Button(frm,text="back",font=('arial',20,'bold'),bd=5,command=back)
+    btn_new.place(relx=0,rely=0)
+
+    lbl_acn=Label(frm,text="ACN",font=('arial',20,'bold'),bg='powder blue')
+    lbl_acn.place(relx=.3,rely=.1)
+
+    e_acn=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_acn.place(relx=.4,rely=.1)
+    e_acn.focus()
+
+    lbl_email=Label(frm,text="Email",font=('arial',20,'bold'),bg='powder blue')
+    lbl_email.place(relx=.3,rely=.2)
+
+    e_email=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_email.place(relx=.4,rely=.2)
+
+    lbl_mob=Label(frm,text="Mob",font=('arial',20,'bold'),bg='powder blue')
+    lbl_mob.place(relx=.3,rely=.3)
+
+    e_mob=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_mob.place(relx=.4,rely=.3)
+
+    btn_sub=Button(frm,text="Submit",font=('arial',20,'bold'),bd=5)
+    btn_sub.place(relx=.45,rely=.4)
+
+
+def newuser_screen():
+    frm=Frame(win)
+    frm.configure(bg='powder blue')
+    frm.place(relx=0,rely=.15,relwidth=1,relheight=.85)
+
+    def back():
+        frm.destroy()
+        main_screen()
+        
+    btn_new=Button(frm,text="back",font=('arial',20,'bold'),bd=5,command=back)
+    btn_new.place(relx=0,rely=0)
+
+    lbl_name=Label(frm,text="Name",font=('arial',20,'bold'),bg='powder blue')
+    lbl_name.place(relx=.3,rely=.1)
+    
+    e_acn=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_acn.place(relx=.4,rely=.1)
+    e_acn.focus()
+
+    lbl_pass=Label(frm,text="Pass",font=('arial',20,'bold'),bg='powder blue')
+    lbl_pass.place(relx=.3,rely=.2)
+    
+    e_pass=Entry(frm,font=('arial',20,'bold'),bd=5,show='*')
+    e_pass.place(relx=.4,rely=.2)
+    
+    
+    lbl_email=Label(frm,text="Email",font=('arial',20,'bold'),bg='powder blue')
+    lbl_email.place(relx=.3,rely=.3)
+
+    e_email=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_email.place(relx=.4,rely=.3)
+
+    lbl_mob=Label(frm,text="Mob",font=('arial',20,'bold'),bg='powder blue')
+    lbl_mob.place(relx=.3,rely=.4)
+
+    e_mob=Entry(frm,font=('arial',20,'bold'),bd=5)
+    e_mob.place(relx=.4,rely=.4)
+
+    lbl_gender=Label(frm,text="Gender",font=('arial',20,'bold'),bg='powder blue')
+    lbl_gender.place(relx=.3,rely=.5)
+
+    cb_gender=Combobox(frm,values=['---select---','Male','Female'],font=('arial',20,'bold'))
+    cb_gender.place(relx=.4,rely=.5)
+
+    btn_sub=Button(frm,text="Submit",font=('arial',20,'bold'),bd=5)
+    btn_sub.place(relx=.45,rely=.6)
+
+def welcome_screen():
+    frm=Frame(win)
+    frm.configure(bg='powder blue')
+    frm.place(relx=0,rely=.15,relwidth=1,relheight=.85)
+
+    def logout():
+        frm.destroy()
+        main_screen()
+
+    def details():
+        ifrm=Frame(frm,highlightbackground='black', highlightthickness=2)
+        ifrm.configure(bg='white')
+        ifrm.place(relx=.2,rely=.1,relwidth=.7,relheight=.5)
+
+        lbl_wel=Label(ifrm,text="This is Details Screen",font=('arial',20,'bold'),bg='white',fg='blue')
+        lbl_wel.pack()
+        
+    def update():
+        ifrm=Frame(frm,highlightbackground='black', highlightthickness=2)
+        ifrm.configure(bg='white')
+        ifrm.place(relx=.2,rely=.1,relwidth=.7,relheight=.5)
+
+        lbl_wel=Label(ifrm,text="This is Update Screen",font=('arial',20,'bold'),bg='white',fg='blue')
+        lbl_wel.pack()
+
+    def deposit():
+        ifrm=Frame(frm,highlightbackground='black', highlightthickness=2)
+        ifrm.configure(bg='white')
+        ifrm.place(relx=.2,rely=.1,relwidth=.7,relheight=.5)
+
+        lbl_wel=Label(ifrm,text="This is Deposit Screen",font=('arial',20,'bold'),bg='white',fg='blue')
+        lbl_wel.pack()
+
+    def withdraw():
+        ifrm=Frame(frm,highlightbackground='black', highlightthickness=2)
+        ifrm.configure(bg='white')
+        ifrm.place(relx=.2,rely=.1,relwidth=.7,relheight=.5)
+
+        lbl_wel=Label(ifrm,text="This is withdraw Screen",font=('arial',20,'bold'),bg='white',fg='blue')
+        lbl_wel.pack()
+
+    def transfer():
+        ifrm=Frame(frm,highlightbackground='black', highlightthickness=2)
+        ifrm.configure(bg='white')
+        ifrm.place(relx=.2,rely=.1,relwidth=.7,relheight=.5)
+
+        lbl_wel=Label(ifrm,text="This is Transfer Screen",font=('arial',20,'bold'),bg='white',fg='blue')
+        lbl_wel.pack()
+        
+    lbl_wel=Label(frm,text="Welcome,",font=('arial',20,'bold'),bg='powder blue')
+    lbl_wel.place(relx=0,rely=0)
+
+    btn_logout=Button(frm,text="logout",font=('arial',20,'bold'),bd=5,command=logout)
+    btn_logout.place(relx=.9,rely=0)
+
+    btn_details=Button(frm,command=details,width=10,text="Details",font=('arial',20,'bold'),bd=5)
+    btn_details.place(relx=0,rely=.1)
+
+    btn_update=Button(frm,command=update,width=10,text="Update",font=('arial',20,'bold'),bd=5)
+    btn_update.place(relx=0,rely=.2)
+
+    btn_deposit=Button(frm,command=deposit,width=10,text="Deposit",font=('arial',20,'bold'),bd=5)
+    btn_deposit.place(relx=0,rely=.3)
+
+    btn_withdraw=Button(frm,command=withdraw,width=10,text="Withdraw",font=('arial',20,'bold'),bd=5)
+    btn_withdraw.place(relx=0,rely=.4)
+
+    btn_transfer=Button(frm,command=transfer,width=10,text="Transfer",font=('arial',20,'bold'),bd=5)
+    btn_transfer.place(relx=0,rely=.5)
+
+main_screen()
+win.mainloop()
